@@ -1,0 +1,548 @@
+
+/*
+	全体コンテナ
+*/
+
+body{
+	color: #333333;
+	font-family: Meiryo;
+	font-size: 14px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#container{
+/*	margin: 20px;*/
+	width: 960px;
+	margin: 0px auto;
+}
+
+/*
+@media screen and (max-width: 790px){
+#container{
+	width: 480px;
+}
+}
+*/
+
+#main{
+	padding: 45px 20px 110px;
+}
+
+/*
+	ブロックレベル要素
+*/
+
+h1,
+h2,
+h3{
+	font-weight: normal;
+	margin: 0px;
+}
+
+h1{
+	font-size: 32px;
+}
+
+h1 a{
+	color: inherit;
+	text-decoration: none;
+}
+
+h2{
+	font-size: 24px;
+}
+
+h3{
+	font-size: 18px;
+}
+
+.silent h1{
+	color: #999999;
+	font-size: 24px;
+}
+
+.silent+#main{
+	padding-bottom: 22px;
+}
+
+section>div{
+	margin-bottom: 20px;
+}
+
+p{
+	margin: 0px;
+}
+
+.description{
+	font-size: 12px;
+}
+
+.boxeslist{
+	margin: 0px;
+	padding: 0px;
+}
+
+.boxeslist li{
+	list-style-type: none;
+}
+
+.boxeslist a{
+	color: #000000;
+	text-decoration: none;
+}
+
+.table{
+	display: table;
+	margin: 20px 0px;
+}
+
+.table>div{
+	display: table-row;
+}
+
+.table>div>div{
+	padding: 2px 38px 2px 0px;
+	padding-right: ;
+	display: table-cell;
+}
+
+.clearfix:after{
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.clearfix>*{
+	float: left;
+}
+
+/*
+	インライン要素
+*/
+
+a{
+	color: #666666;
+}
+
+button,
+input[type=submit],
+input[type=reset],
+a div.button{
+	background-color: #ffffff;
+	font-family: "MS GothicP";
+	font-size: 13px;
+	text-align: center;
+	line-height: 23px;
+	margin-right: 20px;
+	border: 1px solid #333333;
+	border-radius: 6px;
+	padding: 0px 5px;
+	box-shadow: 0px 1px 0px #999999;
+	min-width: 65px;
+	height: 24px;
+	display: inline-block;
+}
+
+a div.button{
+	min-width: 53px;
+	height: 22px;
+}
+
+button:active,
+input[type=submit]:active,
+input[type=reset]:active,
+a div.button:active{
+	box-shadow: none;
+}
+
+button:active *,
+input[type=submit]:active *,
+input[type=reset]:active *,
+a div.button:active *{
+	position: relative;
+	left: 2px;
+	top: 2px;
+}
+
+button.bigbutton,
+input[type=submit].bigbutton,
+input[type=reset].bigbutton,
+.bigbutton{
+	font-family: Meiryo;
+	font-size: 16px;
+	margin: 0px 10px;
+	min-width: 128px;
+	height: 48px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="search"]{
+	border: 1px solid #999999;
+	min-width: 200px;
+	height: 25px;
+}
+
+textarea{
+	border: 1px solid #999999;
+	width: 300px;
+	height: 85px;
+}
+
+select{
+	border: 1px solid #999999;
+}
+
+.hidden{
+	display: none;
+}
+
+/*
+	ヘッダー部分
+*/
+
+#header{
+	padding: 20px;
+	position: relative;
+}
+
+#header > *{
+	vertical-align: bottom;
+	margin-right: 20px;
+	display: inline-block;
+}
+
+.searchbox input[type="search"]{
+	width: 300px;
+}
+
+.searchbox input[type="submit"]{
+	margin-right: 0px;
+	width: 69px;
+	height: 30px;
+}
+
+#header nav .button{
+	margin-right: 0px;
+	margin-left: 20px;
+}
+
+#header nav{
+	margin-right: 0px;
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+}
+
+/*
+	フッター部分
+*/
+
+#footer{
+	padding: 20px;
+}
+
+.copyright{
+	font-size: 12px;
+	text-align: right;
+}
+
+/*
+	トップページ
+*/
+
+.catchcopy{
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 28px;
+}
+
+#indexbuttons{
+	text-align: center;
+	margin: 135px auto 145px;
+/*	width: 900px;*/
+}
+
+#tutorial{
+	margin: 0px auto;
+	width: 900px;
+}
+
+.tutorialbox{
+	background-repeat: no-repeat;
+	margin: 10px;
+	border: 1px solid #999999;
+	border-radius: 20px;
+	width: 200px;
+	height: 200px;
+}
+
+li:nth-child(1) .tutorialbox:before{
+	content: "１";
+	color: #999999;
+	font-family: sans-serif;
+	font-size: 44px;
+	display: block;
+	position: absolute;
+}
+
+li:nth-child(2) .tutorialbox:before{
+	content: "２";
+	color: #999999;
+	font-family: sans-serif;
+	font-size: 44px;
+	display: block;
+	position: absolute;
+}
+
+li:nth-child(3) .tutorialbox:before{
+	content: "３";
+	color: #999999;
+	font-family: sans-serif;
+	font-size: 44px;
+	display: block;
+	position: absolute;
+}
+
+li:nth-child(4) .tutorialbox:before{
+	content: "４";
+	color: #999999;
+	font-family: sans-serif;
+	font-size: 44px;
+	display: block;
+	position: absolute;
+}
+
+.tutorialbox img{
+	margin: 25px 36px 12px 36px;
+}
+
+.tutorialbox div{
+	font-size: 16px;
+	margin-left: 5px;
+}
+
+.loginbuttons{
+	text-align: center;
+	margin: 20px auto 0px;
+}
+
+#login h2,
+#signin h2{
+	text-align: center;
+	margin: 81px 0px 30px;
+}
+
+#login .table,
+#signin .table{
+	margin: 0px auto;
+}
+
+#login .table>*>*:nth-child(1),
+#signin .table>*>*:nth-child(1){
+	width: 112px;
+}
+
+/*
+	検索ページ
+*/
+
+.characterbox{
+	display: inline-block;
+	margin: 20px 20px 0px 0px;
+}
+
+.characterbox:hover,
+.characterbox:active{
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.characterbox img{
+	border: 0px;
+	max-width: 142px;
+	max-height: 200px;
+}
+
+.characterbox .name,
+.characterbox .user{
+	color: #333333;
+	text-align: center;
+	text-decoration: none;
+}
+
+.characterbox .user{
+	color: #999999;
+	font-size: 12px;
+}
+
+/*
+	キャラクター詳細ページ
+*/
+
+.detail_image{
+	margin-right: 20px;
+	width: 144px;
+	height: 200px;
+}
+
+.detail_image img{
+	max-width: 144px;
+	max-height: 200px;
+}
+
+.detailbox{
+	width: 644px;
+}
+
+.detailbox .username{
+	margin-bottom: 20px;
+}
+
+.detailbox .use,
+.detailbox .favourite,
+.detailbox .message{
+	margin-bottom: 20px;
+	display: inline-block;
+}
+
+.detailbox .use img,
+.detailbox .favourite img{
+	vertical-align: middle;
+}
+
+.detailbox .use div,
+.detailbox .favourite div{
+	font-family: sans-serif;
+	font-size: 12px;
+	text-align: center;
+	line-height: 18px;
+	vertical-align: middle;
+	margin: 0px 20px 0px 5px;
+	border: 1px solid #cccccc;
+	min-width: 25px;
+	height: 18px;
+	display: inline-block;
+}
+
+.detailbox .message div{
+	color: #ffffff;
+	background-color: #999999;
+	font-family: sans-serif;
+	font-size: 12px;
+	padding: 1px 5px;
+	border-radius: 8px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.detailbox .description p{
+	margin-bottom: 20px;
+	height: 37px;
+}
+
+/*
+	使うページ
+*/
+
+.usebox{
+	margin: 50px auto;
+	padding: 50px;
+	width: 310px;
+	height: 200px;
+}
+
+.character #image,
+.character #message{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.character img{
+	max-width: 142px;
+	max-height: 200px;
+	margin-right: 10px;
+}
+
+.character .balloon{
+	background-color: #ffffff;
+	font-family: Meiryo !important;
+	font-size: 14px !important;
+	border: 3px solid #cccccc;
+	border-radius: 10px;
+	width: 132px;
+	height: 110px;
+	display: table-cell;
+	vertical-align: middle;
+	padding: 5px
+}
+
+.hintbox{
+	text-align: center;
+}
+
+/*
+	つくるページ
+*/
+
+.editbox{
+	position: relative;
+	z-index: 0;
+}
+
+.images{
+	margin-right: 20px;
+	width: 64%;
+	height: 535px;
+	overflow-y: scroll;
+}
+
+.createbuttons{
+	text-align: center;
+	margin: 20px auto;
+}
+
+.createbuttons button{
+	margin: 0px 10px;
+}
+
+.patternselect select{
+	width: 302px;
+	height: 200px;
+}
+
+.dialog{
+	background-color: #cccccc;
+	border-radius: 20px;
+	padding: 20px;
+	display: none;
+	position: absolute;
+	z-index: 100;
+}
+
+#upload_dialog{
+	left: 156px;
+	top: 178px;
+}
+
+#post_dialog{
+	left: 284px;
+	top: 108px;
+}
+
+.dialog form{
+	margin-top: 20px;
+}
+
+.dialog .createbuttons{
+	margin-bottom: 0px;
+}
+
+/*
+	エラー
+*/
+
+.error{
+	margin-bottom: 20px;
+}
