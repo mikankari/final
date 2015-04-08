@@ -1,4 +1,5 @@
 <?php
+	require("initialize.php");
 	$pagename = "ログアウト";
 	require('header.php');
 
@@ -9,4 +10,7 @@
 	session_regenerate_id();
 
 	header("Location: $root_path/");
+
+	require("footer.php");
+	require("destroy.php");
 ?>

@@ -1,12 +1,12 @@
 <?php
+	require("initialize.php");
 	$pagename = "";
 	require("header.php");
 
 	$_SESSION["session_id"] = session_id();
 	$_SESSION["ticket"] = md5(uniqid(rand(), true));
-	$_SESSION["remote"] = gethostbyaddr($_SERVER["REMOTE_ADDR"]);
+	$_SESSION["remote"] = $_SERVER["REMOTE_ADDR"];
 ?>
-
 <script type="text/javascript">
 	var final = {};
 	final.init = function (event){
@@ -37,9 +37,8 @@
 	
 	window.addEventListener("DOMContentLoaded", final.init, false);
 </script>
-
 <div id="catch">
-	<h1 class="catchcopy"><?= $appname; ?>はしゃべるキャラクターをつくり、<br>誰かのデスクトップに共有します。</h1>
+	<h1 class="catchcopy"><?php echo $appname; ?>はしゃべるキャラクターを投稿して、<br>誰かのデスクトップに共有します。</h1>
 </div>
 <div id="tutorial">
 	<ol class="boxeslist clearfix">
@@ -70,11 +69,11 @@
 	</ol>
 </div>
 <div id="indexbuttons">
-	<button id="create_button" class="bigbutton">つくる</button>
-	<button id="use_button" class="bigbutton">使う</button>
+	<button id="create_button" class="bigbutton"><?php echo $create_screen; ?></button>
+	<button id="use_button" class="bigbutton"><?php echo $use_screen; ?></button>
 </div>
 <div id="login">
-	<h2><?= $appname ?>へログイン</h2>
+	<h2><?php echo $appname; ?>へログイン</h2>
 	<form method="post" action="login.php">
 		<div class="table">
 			<div>
@@ -88,14 +87,14 @@
 		</div>
 		<div class="loginbuttons">
 			<input type="hidden" name="goto" value="search">
-			<input type="hidden" name="session_id" value="<?= $_SESSION["session_id"] ?>">
-			<input type="hidden" name="ticket" value="<?= $_SESSION["ticket"] ?>">
+			<input type="hidden" name="session_id" value="<?php echo $_SESSION["session_id"]; ?>">
+			<input type="hidden" name="ticket" value="<?php echo $_SESSION["ticket"]; ?>">
 			<input type="submit" value="ログイン" class="bigbutton">
 		</div>
 	</form>
 </div>
 <div id="signin">
-	<h2><?= $appname ?>に登録</h2>
+	<h2><?php echo $appname; ?>に登録</h2>
 	<form method="post" action="login.php">
 		<div class="table">
 			<div>
@@ -113,8 +112,8 @@
 		</div>
 		<div class="loginbuttons">
 			<input type="hidden" name="goto" value="search">
-			<input type="hidden" name="session_id" value="<?= $_SESSION["session_id"] ?>">
-			<input type="hidden" name="ticket" value="<?= $_SESSION["ticket"] ?>">
+			<input type="hidden" name="session_id" value="<?php echo $_SESSION["session_id"]; ?>">
+			<input type="hidden" name="ticket" value="<?php echo $_SESSION["ticket"]; ?>">
 			<input type="submit" value="登録する" class="bigbutton">
 		</div>
 	</form>
@@ -122,4 +121,5 @@
 
 <?php
 	require("footer.php");
+	require("destroy.php");
 ?>

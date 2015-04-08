@@ -1,18 +1,7 @@
 <?php
+	require("initialize.php");
 	$pagename = "検索";
 	require("header.php");
-
-	if(!isset($_SESSION["user_id"]) || !($user_id = $_SESSION["user_id"])){
-		$error = "ログインしていません";
-		require("footer.php");
-		exit();
-	}
-	$db = mysql_connect($dbhost, $dbuser, $dbpassword);
-	if(!$db || !mysql_select_db($dbname)){
-		echo "データベースに接続できません";
-		require("footer.php");
-		exit();
-	}
 
 	if(strpos($path, "keyword=") !== false){
 		$keyword = trim($_GET["keyword"]);
@@ -22,7 +11,7 @@
 		}
 ?>
 		<section>
-			<h2>「<?= $keyword ?>」の検索結果</h2>
+			<h2>「<?php echo $keyword; ?>」の検索結果</h2>
 			<div>
 <?php
 				$query = "select * from character_t natural join user_t"
@@ -32,10 +21,10 @@
 				if(mysql_num_rows($result) !== 0){
 					while($row = mysql_fetch_array($result)){
 ?>
-						<a href="character.php?character_id=<?= $row["character_id"] ?>"><div class="characterbox">
-							<img src="upload/<?= $row["character_id"] ?>/<?= $row["image_id"] ?>.png" alt="">
-							<div class="name"><?= $row["name"] ?></div>
-							<div class="user"><?= $row["username"] ?></div>
+						<a href="character.php?character_id=<?php echo $row["character_id"]; ?>"><div class="characterbox">
+							<img src="upload/<?php echo $row["character_id"]; ?>/<?php echo $row["image_id"]; ?>.png" alt="">
+							<div class="name"><?php echo $row["name"]; ?></div>
+							<div class="user"><?php echo $row["username"]; ?></div>
 						</div></a>
 <?php
 					}
@@ -58,7 +47,7 @@
 		$username = $row["username"];
 ?>
 		<section>
-			<h2><?= $username ?>さんがつくったもの一覧</h2>
+			<h2><?php echo $username; ?>さんがつくったもの一覧</h2>
 			<div>
 <?php
 				$query = "select * from character_t"
@@ -68,10 +57,10 @@
 				if(mysql_num_rows($result) !== 0){
 					while($row = mysql_fetch_array($result)){
 ?>
-						<a href="character.php?character_id=<?= $row["character_id"] ?>"><div class="characterbox">
-							<img src="upload/<?= $row["character_id"] ?>/<?= $row["image_id"] ?>.png" alt="">
-							<div class="name"><?= $row["name"] ?></div>
-							<div class="user"><?= $username ?></div>
+						<a href="character.php?character_id=<?php echo $row["character_id"]; ?>"><div class="characterbox">
+							<img src="upload/<?php echo $row["character_id"]; ?>/<?php echo $row["image_id"]; ?>.png" alt="">
+							<div class="name"><?php echo $row["name"]; ?></div>
+							<div class="user"><?php echo $username; ?></div>
 						</div></a>
 <?php
 					}
@@ -97,10 +86,10 @@
 				if(mysql_num_rows($result) !== 0){
 					while($row = mysql_fetch_array($result)){
 ?>
-						<a href="character.php?character_id=<?= $row["character_id"] ?>"><div class="characterbox">
-							<img src="upload/<?= $row["character_id"] ?>/<?= $row["image_id"] ?>.png" alt="">
-							<div class="name"><?= $row["name"] ?></div>
-							<div class="user"><?= $row["username"] ?></div>
+						<a href="character.php?character_id=<?php echo $row["character_id"]; ?>"><div class="characterbox">
+							<img src="upload/<?php echo $row["character_id"]; ?>/<?php echo $row["image_id"]; ?>.png" alt="">
+							<div class="name"><?php echo $row["name"]; ?></div>
+							<div class="user"><?php echo $row["username"]; ?></div>
 						</div></a>
 <?php
 					}
@@ -117,15 +106,15 @@
 			<div>
 <?php
 				$query = "select * from character_t natural join user_t"
-					. " where character_id in (select character_id from activity_t where used <> 0) and ispublic = 1";
+					. " where character_id in (select character_id from used_activity_t where used > 0) and ispublic = 1";
 				$result = mysql_query($query);
 				if(mysql_num_rows($result) !== 0){
 					while($row = mysql_fetch_array($result)){
 ?>
-						<a href="character.php?character_id=<?= $row["character_id"] ?>"><div class="characterbox">
-							<img src="upload/<?= $row["character_id"] ?>/<?= $row["image_id"] ?>.png" alt="">
-							<div class="name"><?= $row["name"] ?></div>
-							<div class="user"><?= $row["username"] ?></div>
+						<a href="character.php?character_id=<?php echo $row["character_id"]; ?>"><div class="characterbox">
+							<img src="upload/<?php echo $row["character_id"]; ?>/<?php echo $row["image_id"]; ?>.png" alt="">
+							<div class="name"><?php echo $row["name"]; ?></div>
+							<div class="user"><?php echo $row["username"]; ?></div>
 						</div></a>
 <?php
 					}
@@ -142,15 +131,15 @@
 			<div>
 <?php
 				$query = "select * from character_t natural join user_t"
-					. " where character_id in (select character_id from activity_t where favourited <> 0) and ispublic = 1";
+					. " where character_id in (select character_id from favourited_activity_t where favourited <> 0) and ispublic = 1";
 				$result = mysql_query($query);
 				if(mysql_num_rows($result) !== 0){
 					while($row = mysql_fetch_array($result)){
 ?>
-						<a href="character.php?character_id=<?= $row["character_id"] ?>"><div class="characterbox">
-							<img src="upload/<?= $row["character_id"] ?>/<?= $row["image_id"] ?>.png" alt="">
-							<div class="name"><?= $row["name"] ?></div>
-							<div class="user"><?= $row["username"] ?></div>
+						<a href="character.php?character_id=<?php echo $row["character_id"]; ?>"><div class="characterbox">
+							<img src="upload/<?php echo $row["character_id"]; ?>/<?php echo $row["image_id"]; ?>.png" alt="">
+							<div class="name"><?php echo $row["name"]; ?></div>
+							<div class="user"><?php echo $row["username"]; ?></div>
 						</div></a>
 <?php
 					}
@@ -164,10 +153,7 @@
 		</section>
 <?php
 	}
-?>
 
-<?php
-	mysql_close($db);
-	
 	require("footer.php");
+	require("destroy.php");
 ?>

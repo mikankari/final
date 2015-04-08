@@ -1,14 +1,8 @@
 <?php
+	require("initialize.php");
 	$pagename = 'PCやスマホで使う';
 	require('header.php');
-
-	if(!isset($_SESSION["user_id"]) || !($user_id = $_SESSION["user_id"])){
-		$error = "ログインしていません";
-		require("footer.php");
-		exit();
-	}
 ?>
-
 <script type="text/javascript">
 	var final = {};
 	final.init = function (event){
@@ -37,7 +31,6 @@
 	
 	window.addEventListener("DOMContentLoaded", final.init, false);
 </script>
-
 <section>
 	<h2>使うためには…</h2>
 	<section>
@@ -97,7 +90,7 @@
 		</div>
 	</section>
 </section>
-
 <?php
 	require('footer.php');
+	require("destroy.php");
 ?>

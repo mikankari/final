@@ -1,18 +1,7 @@
 <?php
-	$pagename = "つくる";
+	require("initialize.php");
+	$pagename = "$create_screen";
 	require("header.php");
-
-	if(!isset($_SESSION["user_id"]) || !($user_id = $_SESSION["user_id"])){
-		$error = "ログインしていません";
-		require("footer.php");
-		exit();
-	}
-	$db = mysql_connect($dbhost, $dbuser, $dbpassword);
-	if(!$db || !mysql_select_db($dbname)){
-		$error = "データベースに接続できませんでした";
-		require("footer.php");
-		exit();
-	}
 
 	if(isset($_GET["character_id"])){
 		$character_id = trim($_GET["character_id"]);
@@ -21,6 +10,12 @@
 			. " where character_id = $character_id";
 		$result = mysql_query($query);
 		$row = mysql_fetch_array($result);
+		if($row["user_id"] !== "$user_id"){
+			$error = "キャラクターを編集できる権限がありません";
+			require("footer.php");
+			require("destroy.php");
+			exit();
+		}
 		$character_name = $row["name"];
 		$character_description = $row["description"];
 		$character_ispublic = $row["ispublic"];
@@ -79,15 +74,19 @@
 					. " value ($character_id, '{$upload["name"]}', 0)";
 				$result = mysql_query($query);
 				$image_id = mysql_insert_id();
-				move_uploaded_file($upload["tmp_name"], "$image_path/$character_id/$image_id.png");
+				if($image_id){
+					move_uploaded_file($upload["tmp_name"], "$image_path/$character_id/$image_id.png");
+				}
 			}else{
 				$error = "ファイルはPNGでない、または" . ($image_maxsize / 1048576) . "MBを超えています";
 				require("footer.php");
+				require("destroy.php");
 				exit();
 			}
 		}else{
 			$error = "アップロードが失敗しました";
 			require("footer.php");
+			require("destroy.php");
 			exit();
 		}
 	}
@@ -180,7 +179,7 @@
 		var character_img = document.querySelector(".character img");
 		var character_textarea = document.querySelector(".character textarea");
 		var data = {};
-		data.url = character_img.src.substring(character_img.src.indexOf("upload/<?= $character_id ?>/"));
+		data.url = character_img.src.substring(character_img.src.indexOf("upload/<?php echo $character_id; ?>/"));
 		data.filename = character_img.getAttribute("data-filename");
 		data.message = character_textarea.value;
 		return data;
@@ -246,8 +245,8 @@
 		while($row = mysql_fetch_array($result)){
 ?>
 			<div class="characterbox" name="image_button" data-value="">
-				<img src="upload/<?= $character_id ?>/<?= $row["image_id"] ?>.png" alt="">
-				<div class="name"><?= $row["filename"] ?></div>
+				<img src="upload/<?php echo $character_id . "/" . $row["image_id"]; ?>.png" alt="">
+				<div class="name"><?php echo $row["filename"]; ?></div>
 			</div>
 <?php
 		}
@@ -278,21 +277,21 @@
 				$result = mysql_query($query);
 				while($row = mysql_fetch_array($result)){
 ?>
-					<option value="upload/<?= $character_id ?>/<?= $row["image_id"] ?>.png,<?= $row["message"] ?>"><?= $row["filename"] ?> | <?= $row["message"] ?></option>
+					<option value="upload/<?php echo $character_id . "/" . $row["image_id"] . ".png," . $row["message"]; ?>"><?php echo $row["filename"] . "|" . $row["message"]; ?></option>
 <?php
 				}
 ?>
 			</select>
 		</div>
 		<div class="createbuttons">
-			<button id="save_button">下書き保存</button>
+			<button id="save_button">非公開で保存</button>
 			<button id="post_button">公開して投稿</button>
 			<button id="cancel_button">終了</button>
 		</div>
 	</div>
 	<div id="upload_dialog" class="dialog">
 		<h2>画像の追加</h2>
-		<div class="description">PNG画像、<?= $image_maxsize / 1048576 ?>MBまでアップロード可能</div>
+		<div class="description">PNG画像、<?php echo $image_maxsize / 1048576; ?>MBまでアップロード可能</div>
 		<form method="post" enctype="multipart/form-data">
 			<div>
 				<input type="file" name="upload">
@@ -306,11 +305,11 @@
 	</div>
 	<div id="post_dialog" class="dialog">
 		<h2>キャラクターの投稿</h2>
-		<div class="description">後でキャラクターページから変更可能できます</div>
+		<div class="description">後でキャラクターページから変更できます</div>
 		<form method="post">
 			<div>
 				<div><label>キャラクター名</label></div>
-				<div><input type="text" name="name" value="<?= $character_name ?>"></div>
+				<div><input type="text" name="name" value="<?php echo $character_name; ?>"></div>
 			</div>
 			<div>
 				<div><label>サムネイル</label></div>
@@ -321,7 +320,7 @@
 					$result = mysql_query($query);
 					while($row = mysql_fetch_array($result)){
 ?>
-						<option value="<?= $row["image_id"] ?>"><?= $row["filename"] ?></option>
+						<option value="<?php echo $row["image_id"]; ?>"><?php echo $row["filename"]; ?></option>
 <?php
 					}
 ?>
@@ -329,13 +328,13 @@
 			</div>
 			<div>
 				<div><label>説明文</label></div>
-				<div><textarea name="description"><?= $character_description ?></textarea></div>
+				<div><textarea name="description"><?php echo $character_description; ?></textarea></div>
 			</div>
 			<div class="createbuttons">
 				<input type="submit" value="OK">
 				<button id="postcancel_button">キャンセル</button>
 				<input type="hidden" name="patterns" value="">
-				<input type="hidden" name="ispublic" value="<?= $character_ispublic ?>">
+				<input type="hidden" name="ispublic" value="<?php echo $character_ispublic; ?>">
 				<input type="hidden" name="goto" value="create">
 			</div>
 		</form>
@@ -343,7 +342,6 @@
 </div>
 
 <?php
-	mysql_close($db);
-	
 	require("footer.php");
+	require("destroy.php");
 ?>

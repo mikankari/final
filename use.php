@@ -1,69 +1,65 @@
 <?php
+	require("initialize.php");
 	$pagename = "キャラ名";
 	require("header.php");
 
-	if(!isset($_SESSION["user_id"]) || !($user_id = $_SESSION["user_id"])){
-		$error = "ログインしていません";
-		require("footer.php");
-		exit();
-	}
 	$character_id = trim($_GET["character_id"]);
 	$character_id = strip_tags($character_id);
-	$db = mysql_connect($dbhost, $dbuser, $dbpassword);
-	if(!$db || !mysql_select_db($dbname)){
-		echo "データベースに接続できません";
-		require("footer.php");
-		exit();
-	}
 	$query = "select * from character_t"
 		. " where character_id = $character_id";
 	$result = mysql_query($query);
 	$row = mysql_fetch_array($result);
-	if($row["ispublic"] === "0"){
-		echo "キャラクターは非公開です";
+	if($row["user_id"] !== "$user_id" && $row["ispublic"] === "0"){
+		$error = "キャラクターは非公開です";
 		require("footer.php");
+		require("destroy.php");
 		exit();
 	}
+// 作者自身が表示した場合
 //	if("$user_id" === row["user_id"]){
-		$query = "insert into activity_t (user_id, date, character_id, used, favourited)"
-			. " values ($user_id, now(), $character_id, 1, 0)";
-		$result = mysql_query($query);
-		$query = "update character_t"
-			. " set use_count = (select count(used) from activity_t where character_id = $character_id and used <> 0)"
-			. " where character_id = $character_id";
+		$query = "insert into used_activity_t (user_id, date, time, character_id, used)"
+			. " values ($user_id, CURRENT_DATE, CURRENT_TIME, $character_id, 1)";
 		$result = mysql_query($query);
 //	}
-	$query = "select * from patterns_t natural join image_t"
-		. " where character_id = $character_id";
-	$result = mysql_query($query);
 ?>
 <script type="text/javascript">
 	var final = {};
-	final.patterns = [];
-<?php
-	while($row = mysql_fetch_array($result)){
-?>
-		final.patterns.push({
-			url: "upload/<?= $row["character_id"] ?>/<?= $row["image_id"] ?>.png",
-			message: "<?= $row["message"] ?>"
-		});
-<?php
-	}
-?>
+	final.patterns = null;
 	final.current_index = 0;
 	final.timer = null;
 	final.init = function (event){
 		var character_img = document.querySelector(".character img");
+		var character_textarea = document.querySelector(".character .balloon");
+		var loader = new XMLHttpRequest();
 		character_img.addEventListener("load", function (event){
 			final.updateMessage();
 		}, false);
-		final.interval();
-		final.timer = window.setInterval(final.interval, 3000);
+		loader.addEventListener("load", function (event){
+			if(loader.readyState === 4){
+				if(loader.status === 200){
+					final.patterns = JSON.parse(loader.responseText);
+					if(final.patterns.error){
+						character_textarea.innerHTML = "読み込み失敗（" + final.patterns.error + "）";
+					}else if(final.patterns.length === 0){
+						character_textarea.innerHTML = "読み込み失敗（パターンが１つもありません）"
+					}else{
+						final.intervalMessage();
+						final.timer = window.setInterval(final.intervalMessage, 6000);
+					}
+				}else{
+					character_textarea.innerHTML = "読み込み失敗（キャラクターデータにアクセスできません）";
+				}
+			}
+		}, false);
+		loader.open("GET", "patterns.php?character_id=<?php echo $character_id; ?>", true);
+		loader.send();
+		character_textarea.innerHTML = "読み込み中...";
 	}
 	final.destroy = function (){
 		window.clearInterval(final.timer);
+		final.updateAnalytics();
 	}
-	final.interval = function (){
+	final.intervalMessage = function (){
 		var character_img = document.querySelector(".character img");
 		final.current_index = Math.floor(Math.random() * final.patterns.length);
 		var pattern = final.patterns[final.current_index];
@@ -74,8 +70,14 @@
 		var pattern = final.patterns[final.current_index];
 		character_textarea.innerHTML = pattern.message;
 	}
+	final.updateAnalytics = function (){
+		var loader = new XMLHttpRequest();
+		loader.open("GET", "usedestroy.php?character_id=<?php echo $character_id; ?>&used_id=<?php echo mysql_insert_id(); ?>", false);
+		loader.send();
+	}
 
 	window.addEventListener("DOMContentLoaded", final.init, false);
+	window.addEventListener("beforeunload", final.destroy, false);
 </script>
 <div class="usebox">
 <div class="character">
@@ -86,9 +88,7 @@
 <div class="hintbox">
 <a href="use_on_native.php">使い方のヒント：PCやスマホに表示することもできます。</a>
 </div>
-
 <?php
-	mysql_close($db);
-	
 	require("footer.php");
+	require("destroy.php");
 ?>
