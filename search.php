@@ -102,7 +102,7 @@
 			</div>
 		</section>
 		<section>
-			<h2>よく使われています</h2>
+			<h2>よく表示されています</h2>
 			<div>
 <?php
 				$query = "select * from character_t natural join user_t"
@@ -127,7 +127,7 @@
 			</div>
 		</section>
 		<section>
-			<h2>よく好まれています</h2>
+			<h2>よく評価されています</h2>
 			<div>
 <?php
 				$query = "select * from character_t natural join user_t"

@@ -4,7 +4,7 @@
 	require("header.php");
 
 	$character_id = trim($_GET["character_id"]);
-	$character_id = strip_tags($character_id);
+	$character_id = strip_tags($character_id);	
 	$query = "select * from character_t natural join user_t"
 		. " where character_id = $character_id";
 	$result = mysql_query($query);
@@ -86,6 +86,11 @@
 			final.showFeedbackMessage("評価が完了しました");
 		};
 		var clickFavouriteFailed = function (event){
+			var loader;
+			loader = new XMLHttpRequest();
+			loader.open("POST", window.location.href, true);
+			loader.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			loader.send("favourite=" + event.target.getAttribute("data-index"));
 			final.showFeedbackMessage("再評価は１日おきにできます");
 		}
 		var i;

@@ -194,7 +194,7 @@
 		}else if(element.parentNode.id = "pattern_select"){
 			split = element.value.split(",");
 			url = split[0];
-			split = element.text.split(" | ");
+			split = element.text.split("|");
 			filename = split[0];
 			message = split[1];
 			character_textarea.innerHTML = message;

@@ -19,8 +19,8 @@
 	<div>
 <?php
 		$query = "select * from activity_v natural join user_t"
-			. " where character_id in (select character_id from character_t where user_id = $user_id) and user_id <> $user_id and used >= 0"
-			. " order by character_id desc limit 10";
+			. " where character_id in (select character_id from character_t where user_id = $user_id) and user_id <> $user_id and used >= 0 and favourited >= 0"
+			. " group by user_id, date, character_id, used, favourited order by character_id desc limit 10";
 		$result = mysql_query($query);
 		if(mysql_num_rows($result) !== 0){
 ?>
@@ -33,7 +33,7 @@
 					$row2 = mysql_fetch_array($result2);
 					$content = "{$row["username"]}さん";
 					if($row["used"] === "1"){
-						$content .= "に「{$row2["name"]}」を使われました";
+						$content .= "が「{$row2["name"]}」を表示しました";
 					}else{
 						$content .= "が「{$row2["name"]}」に★{$row["favourited"]}つの評価をしました";
 					}
@@ -87,7 +87,7 @@
 			}
 		}else{
 ?>
-			<div>まだつくっていません</div>
+			<div>まだ投稿していません</div>
 <?php
 		}
 ?>
@@ -113,7 +113,7 @@
 			}
 		}else{
 ?>
-			<div>まだつくっていません</div>
+			<div>まだ投稿していません</div>
 <?php
 		}
 ?>
